@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Dynamic variables</title>
+    <link rel="stylesheet" href="public/style.css">
+
+</head>
+<body>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/graph1.html">Graphic 1</a></li>
+        <li><a href="/lines.html">Lines</a></li>
+        <li class="active"><a href="#">Dinamic</a></li>
+        <li><a href="/graph2.html">Graphic 2</a></li>
+        <li><a href="/graph3.html">Graphic 3</a></li>
+        <li><a href="/graph4.html">Graphic 4</a></li>
+        <li><a href="/graph5.html">Graphic 5</a></li>
+    </ul>
+    <h1>Dynamic variables</h1>
+    <br/>
+    <p>Empty</p>
+    <p>Empty</p>
+    <p>Empty</p>
+    <br/>
+    <script>
+        var data = ['First', 'Second', 'Third'];
+        setTimeout(() => {
+            d3.selectAll('p').data(data).text((d, i) => {
+                showData = d + i;
+                return showData;
+            });
+        }, 2000);
+
+        d3.selectAll('p')
+            .datum(data)
+            .text(function(d, i){
+                return d + i;
+            });
+
+    </script>
+</body>
+</html>

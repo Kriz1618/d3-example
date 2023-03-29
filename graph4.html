@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Graphic 4</title>
+    <link rel="stylesheet" href="public/style.css">
+</head>
+
+<body>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/graph1.html">Graphic 1</a></li>
+        <li><a href="/lines.html">Lines</a></li>
+        <li><a href="/dynamic.html">Dinamic</a></li>
+        <li><a href="/graph2.html">Graphic 2</a></li>
+        <li><a href="/graph3.html">Graphic 3</a></li>
+        <li class="active"><a href="/graph4.html">Graphic 4</a></li>
+        <li><a href="/graph5.html">Graphic 5</a></li>
+    </ul>
+
+    <h1>Graphic 4</h1>
+    <div style="display: flex; justify-content: center; align-items: center; padding: 25px">
+        <svg id="grafico" width="500" height="300"></svg>
+    </div>
+    <div id="lines"></div>
+    <script>
+        // Datos de ejemplo
+        var datos = [5, 10, 15, 20, 25];
+
+        // Escala Y
+        var escalaY = d3.scaleLinear()
+            .domain([0, d3.max(datos)])
+            .range([0, 250]);
+
+        // Eje Y
+        var ejeY = d3.axisLeft(escalaY);
+
+        // Escala X
+        var escalaX = d3.scaleBand()
+            .domain(d3.range(datos.length))
+            .range([0, 400])
+            .paddingInner(0.05);
+
+        // Eje X
+        var ejeX = d3.axisBottom(escalaX);
+
+        // Crea el gráfico
+        var svg = d3.select("#grafico");
+
+        // Añade las barras
+        svg.selectAll("rect")
+            .data(datos)
+            .enter().append("rect")
+            .attr("x", function (d, i) { return escalaX(i); })
+            .attr("y", function (d) { return 250 - escalaY(d); })
+            .attr("width", escalaX.bandwidth())
+            .attr("height", function (d) { return escalaY(d); })
+            .attr("fill", "steelblue");
+
+        // Añade la línea horizontal
+        svg.append("line")
+            .attr("x1", 0)
+            .attr("y1", 250)
+            .attr("x2", 400)
+            .attr("y2", 250)
+            .attr("stroke", "black")
+            .attr("stroke-width", 2);
+
+        // Añade la línea vertical
+        svg.append("line")
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2", 0)
+            .attr("y2", 250)
+            .attr("stroke", "black")
+            .attr("stroke-width", 2);
+
+        // Añade el eje Y
+        svg.append("g")
+            .attr("class", "eje")
+            .call(ejeY);
+
+        // Añade el eje X
+        svg.append("g")
+            .attr("class", "eje")
+            .attr("transform", "translate(0, 250)")
+            .call(ejeX);
+
+    </script>
+    <script>
+        const svg1 = d3.select("body")
+            .append("svg")
+            .attr("width", 500)
+            .attr("height", 500);
+
+        const xScale = d3.scaleLinear()
+            .domain([0, 10])
+            .range([50, 450]);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, 10])
+            .range([450, 50]);
+
+        function drawGuideLines(xScale, yScale, values) {
+            const lines = svg1.selectAll(".guide-line")
+                .data(values);
+
+            lines.enter()
+                .append("line")
+                .attr("class", "guide-line")
+                .merge(lines)
+                .attr("x1", xScale)
+                .attr("y1", yScale)
+                .attr("x2", xScale.range()[0])
+                .attr("y2", yScale)
+                .attr("stroke", "#ccc")
+                .attr("stroke-width", 5)
+                .attr("stroke-dasharray", "4,5");
+
+            lines.exit()
+                .remove();
+        }
+
+        const guideLinesX = [2, 4, 6, 8];
+        const guideLinesY = [3, 6, 9, 11];
+
+        drawGuideLines(xScale, yScale, guideLinesX);
+        drawGuideLines(yScale, xScale, guideLinesY);
+
+
+    </script>
+</body>
+
+</html>

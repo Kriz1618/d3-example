@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gráfico de línea con puntos en d3.js</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="public/style.css">
+</head>
+
+<body>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li class="active"><a href="#">Graphic 1</a></li>
+        <li><a href="/lines.html">Lines</a></li>
+        <li><a href="/dynamic.html">Dinamic</a></li>
+        <li><a href="/graph2.html">Graphic 2</a></li>
+        <li><a href="/graph3.html">Graphic 3</a></li>
+        <li><a href="/graph4.html">Graphic 4</a></li>
+    </ul>
+    <h1>Graphic</h1>
+   
+    <svg width="600" height="400"></svg>
+    <script>
+        const data = [
+            { x: 0, y: 10 },
+            { x: 1, y: 20 },
+            { x: 2, y: 15 },
+            { x: 3, y: 25 },
+            { x: 4, y: 18 }
+        ];
+
+        const xScale = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.x)])
+            .range([0, 500]);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.y)])
+            .range([350, 0]);
+
+        const line = d3.line()
+            .x(d => xScale(d.x))
+            .y(d => yScale(d.y));
+
+        const chart = d3.select('svg')
+            .append('g')
+            .attr('transform', 'translate(50, 50)');
+
+        chart.append('path')
+            .datum(data)
+            .attr('fill', 'none')
+            .attr('stroke', 'steelblue')
+            .attr('stroke-width', 2)
+            .attr('d', line);
+
+        chart.selectAll('circle')
+            .data(data)
+            .enter()
+            .append('circle')
+            .attr('cx', d => xScale(d.x))
+            .attr('cy', d => yScale(d.y))
+            .attr('r', 4)
+            .attr('fill', 'steelblue');
+
+    </script>
+</body>
+
+</html>
